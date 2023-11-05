@@ -48,3 +48,11 @@ class Assertions:
     @staticmethod
     def assert_response_text(response: Response, expected_text):
         assert response.text == expected_text, f"Unexpected text, Expected: {expected_text}, Fact: {response.text}"
+
+    @staticmethod
+    def assert_error_text(response: Response, expected_text):
+        try:
+            response_as_dict = response.json()
+        except json.JSONDecodeError:
+            assert False, f"Response is not in Json format. Response text is {response.text}"
+        assert response_as_dict["error"] == expected_text, f"Unexpected text, Expected: {expected_text}, Fact: {response.text}"
